@@ -1,124 +1,126 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Distrito 11 - Punto de Venta</title>
-    <link rel="stylesheet" href="style.css">
+    <meta name="description" content="Sistema de punto de venta de Distrito 11">
+    <title>Distrito 11 | Punto de Venta</title>
+    <link rel="stylesheet" href="./style.css">
 </head>
+
 <body>
-
-<header class="header">
-    <div>
-        <h1>DISTRITO <span>11</span></h1>
-        <p>Punto de Venta</p>
-    </div>
-    <div id="fecha"></div>
-</header>
-
-<nav class="nav">
-    <button class="nav-btn active" onclick="mostrarSeccion('venta', this)">Venta</button>
-    <button class="nav-btn" onclick="mostrarSeccion('pedidos', this)">Pedidos</button>
-    <button class="nav-btn" onclick="mostrarSeccion('productos', this)">Productos</button>
-</nav>
-
-<main>
-
-<section id="venta" class="seccion activa">
-    <div class="venta-grid">
-
-        <div class="menu-panel">
-            <div class="section-title">
-                <h2>Menú</h2>
-            </div>
-
-            <div id="categorias" class="categorias"></div>
-
-            <div id="productosVenta" class="productos-grid"></div>
+    <header class="header">
+        <div>
+            <h1>DISTRITO <span>11</span></h1>
+            <p>Punto de Venta</p>
         </div>
 
-        <div class="pedido-panel">
+        <time id="fecha" datetime=""></time>
+    </header>
+
+    <nav class="nav" aria-label="Navegación principal">
+        <button class="nav-btn active" type="button" onclick="mostrarSeccion('venta', this)">
+            Venta
+        </button>
+        <button class="nav-btn" type="button" onclick="mostrarSeccion('pedidos', this)">
+            Pedidos
+        </button>
+        <button class="nav-btn" type="button" onclick="mostrarSeccion('productos', this)">
+            Productos
+        </button>
+    </nav>
+
+    <main>
+        <section id="venta" class="seccion activa" aria-labelledby="titulo-venta">
+            <div class="venta-grid">
+                <div class="menu-panel">
+                    <div class="section-title">
+                        <h2 id="titulo-venta">Menú</h2>
+                    </div>
+
+                    <div id="categorias" class="categorias" aria-label="Categorías de productos"></div>
+                    <div id="productosVenta" class="productos-grid" aria-live="polite"></div>
+                </div>
+
+                <div class="pedido-panel">
+                    <div class="section-title">
+                        <h2>Pedido</h2>
+                    </div>
+
+                    <label for="mesa">Mesa</label>
+                    <select id="mesa" name="mesa">
+                        <option value="">Seleccionar mesa</option>
+                        <option value="Mesa 1">Mesa 1</option>
+                        <option value="Mesa 2">Mesa 2</option>
+                        <option value="Mesa 3">Mesa 3</option>
+                        <option value="Mesa 4">Mesa 4</option>
+                        <option value="Mesa 5">Mesa 5</option>
+                        <option value="Mesa 6">Mesa 6</option>
+                        <option value="Mesa 7">Mesa 7</option>
+                        <option value="Mesa 8">Mesa 8</option>
+                        <option value="Mesa 9">Mesa 9</option>
+                        <option value="Mesa 10">Mesa 10</option>
+                        <option value="Mesa 11">Mesa 11</option>
+                        <option value="Mesa 12">Mesa 12</option>
+                        <option value="Para llevar">Para llevar</option>
+                    </select>
+
+                    <div id="carrito" class="carrito" aria-live="polite"></div>
+
+                    <div class="total">
+                        <span>Total</span>
+                        <strong id="total">$0.00</strong>
+                    </div>
+
+                    <button class="btn-principal" type="button" onclick="guardarPedido()">
+                        GUARDAR PEDIDO
+                    </button>
+                    <button class="btn-secundario" type="button" onclick="limpiarPedido()">
+                        LIMPIAR
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section id="pedidos" class="seccion" aria-labelledby="titulo-pedidos">
             <div class="section-title">
-                <h2>Pedido</h2>
+                <h2 id="titulo-pedidos">Pedidos</h2>
+                <strong id="ventasTotales">Ventas: $0.00</strong>
             </div>
 
-            <label>Mesa</label>
-            <select id="mesa">
-                <option value="">Seleccionar mesa</option>
-                <option>Mesa 1</option>
-                <option>Mesa 2</option>
-                <option>Mesa 3</option>
-                <option>Mesa 4</option>
-                <option>Mesa 5</option>
-                <option>Mesa 6</option>
-                <option>Mesa 7</option>
-                <option>Mesa 8</option>
-                <option>Mesa 9</option>
-                <option>Mesa 10</option>
-                <option>Mesa 11</option>
-                <option>Mesa 12</option>
-                <option>Para llevar</option>
-            </select>
+            <div id="listaPedidos" class="pedidos-grid" aria-live="polite"></div>
+        </section>
 
-            <div id="carrito" class="carrito"></div>
-
-            <div class="total">
-                <span>Total</span>
-                <strong id="total">$0.00</strong>
+        <section id="productos" class="seccion" aria-labelledby="titulo-productos">
+            <div class="section-title">
+                <h2 id="titulo-productos">Administrar productos</h2>
             </div>
 
-            <button class="btn-principal" onclick="guardarPedido()">
-                GUARDAR PEDIDO
-            </button>
+            <form class="form-producto" onsubmit="event.preventDefault(); guardarProducto();">
+                <input type="hidden" id="productoId">
 
-            <button class="btn-secundario" onclick="limpiarPedido()">
-                LIMPIAR
-            </button>
-        </div>
+                <label class="sr-only" for="nombreProducto">Nombre del producto</label>
+                <input id="nombreProducto" type="text" placeholder="Nombre del producto" autocomplete="off">
 
-    </div>
-</section>
+                <label class="sr-only" for="precioProducto">Precio</label>
+                <input id="precioProducto" type="number" min="0.01" step="0.01" placeholder="Precio">
 
-<section id="pedidos" class="seccion">
-    <div class="section-title">
-        <h2>Pedidos</h2>
-        <strong id="ventasTotales">$0.00</strong>
-    </div>
+                <label class="sr-only" for="categoriaProducto">Categoría</label>
+                <input id="categoriaProducto" type="text" placeholder="Categoría" autocomplete="off">
 
-    <div id="listaPedidos" class="pedidos-grid"></div>
-</section>
+                <button class="btn-principal" type="submit">GUARDAR</button>
+                <button class="btn-secundario" type="button" onclick="cancelarEdicion()">
+                    CANCELAR
+                </button>
+            </form>
 
-<section id="productos" class="seccion">
-    <div class="section-title">
-        <h2>Administrar productos</h2>
-    </div>
+            <div id="listaProductosAdmin" class="admin-productos" aria-live="polite"></div>
+        </section>
+    </main>
 
-    <div class="form-producto">
-        <input type="hidden" id="productoId">
-
-        <input id="nombreProducto" type="text" placeholder="Nombre del producto">
-
-        <input id="precioProducto" type="number" step="0.01" placeholder="Precio">
-
-        <input id="categoriaProducto" type="text" placeholder="Categoría">
-
-        <button class="btn-principal" onclick="guardarProducto()">
-            GUARDAR
-        </button>
-
-        <button class="btn-secundario" onclick="cancelarEdicion()">
-            CANCELAR
-        </button>
-    </div>
-
-    <div id="listaProductosAdmin" class="admin-productos"></div>
-</section>
-
-</main>
-
-<script src="./localStorage.js"></script>
-<script src="./script.js"></script>
-
+    <script src="./localStorage.js"></script>
+    <script src="./script.js"></script>
 </body>
+
 </html>
-```
